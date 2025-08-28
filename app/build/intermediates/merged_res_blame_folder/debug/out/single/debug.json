@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "com.example.simpleaudioplayer.app-merged_res-38:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-40:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.simpleaudioplayer.app-merged_res-38:/xml_backup_rules.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-40:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/layout_item_track.xml.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/layout/item_track.xml"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/layout_activity_main.xml.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-38:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-40:/mipmap-mdpi/ic_launcher_round.png"
+    }
+]
