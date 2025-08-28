@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,51 +12,107 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Header with App Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎵 MelodyFlow"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premium Audio Experience"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary" />
+
+        </LinearLayout>
+
         <!-- Now Playing Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
-                <TextView
+                <!-- Now Playing Header -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Now Playing"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
 
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_media_play"
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Now Playing"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/primary" />
+
+                </LinearLayout>
+
+                <!-- Current Track Info -->
                 <TextView
                     android:id="@+id/tvNowPlaying"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Нічого не грає"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="16dp" />
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:minHeight="60dp"
+                    android:background="@drawable/rounded_background"
+                    android:padding="16dp" />
 
-                <!-- Progress Slider -->
+                <!-- Progress Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="20dp">
 
+                    <!-- Time Labels -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp">
 
                         <TextView
                             android:id="@+id/tvCurrentTime"
@@ -64,7 +121,8 @@
                             android:layout_weight="1"
                             android:text="0:00"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="monospace" />
 
                         <TextView
                             android:id="@+id/tvTotalTime"
@@ -74,10 +132,12 @@
                             android:gravity="end"
                             android:text="0:00"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="monospace" />
 
                     </LinearLayout>
 
+                    <!-- Progress Slider -->
                     <com.google.android.material.slider.Slider
                         android:id="@+id/sliderProgress"
                         android:layout_width="match_parent"
@@ -86,9 +146,10 @@
                         android:valueFrom="0"
                         android:valueTo="1"
                         android:stepSize="0.001"
-                        app:thumbColor="@color/primary"
-                        app:trackColorActive="@color/primary"
-                        app:trackColorInactive="@color/surface_variant" />
+                        app:thumbColor="@color/slider_thumb"
+                        app:trackColorActive="@color/slider_active"
+                        app:trackColorInactive="@color/slider_inactive"
+                        app:haloColor="@color/slider_active" />
 
                 </LinearLayout>
 
@@ -100,25 +161,27 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
+                <!-- Controls Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Playback Controls"
-                    android:textSize="18sp"
+                    android:text="🎮 Playback Controls"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center" />
 
                 <!-- Main Controls -->
                 <LinearLayout
@@ -126,34 +189,34 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="20dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPrevious"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:text="⏮️"
-                        android:textSize="20sp"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="24sp"
+                        style="@style/Widget.Material3.Button.Custom"
+                        android:layout_marginEnd="16dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPlayPause"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:text="▶️"
-                        android:textSize="24sp"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_marginHorizontal="8dp" />
+                        android:textSize="32sp"
+                        style="@style/Widget.Material3.Button.Custom"
+                        android:layout_marginHorizontal="16dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnNext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:text="⏭️"
-                        android:textSize="20sp"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_marginStart="8dp" />
+                        android:textSize="24sp"
+                        style="@style/Widget.Material3.Button.Custom"
+                        android:layout_marginStart="16dp" />
 
                 </LinearLayout>
 
@@ -163,32 +226,35 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="20dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRepeatTrack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
                         android:text="🔂"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_marginEnd="8dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRepeatPlaylist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
                         android:text="🔁"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_marginHorizontal="8dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnShuffle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
                         android:text="🔀"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_marginStart="8dp" />
 
@@ -202,25 +268,27 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
+                <!-- Volume Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Audio Controls"
-                    android:textSize="18sp"
+                    android:text="🔊 Audio Controls"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center" />
 
                 <!-- Volume Control -->
                 <LinearLayout
@@ -233,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -251,7 +319,8 @@
                             android:gravity="end"
                             android:text="100%"
                             android:textSize="16sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="monospace" />
 
                     </LinearLayout>
 
@@ -263,9 +332,10 @@
                         android:valueFrom="0"
                         android:valueTo="100"
                         android:stepSize="1"
-                        app:thumbColor="@color/primary"
-                        app:trackColorActive="@color/primary"
-                        app:trackColorInactive="@color/surface_variant" />
+                        app:thumbColor="@color/slider_thumb"
+                        app:trackColorActive="@color/slider_active"
+                        app:trackColorInactive="@color/slider_inactive"
+                        app:haloColor="@color/slider_active" />
 
                 </LinearLayout>
 
@@ -277,25 +347,27 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
+                <!-- Actions Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Actions"
-                    android:textSize="18sp"
+                    android:text="⚡ Quick Actions"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center" />
 
                 <!-- Action Buttons -->
                 <LinearLayout
@@ -308,22 +380,22 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAddAudio"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
                         android:text="📁 Add Audio"
-                        android:textSize="14sp"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="16sp"
+                        style="@style/Widget.Material3.Button.Custom"
+                        android:layout_marginEnd="12dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSettings"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
                         android:text="⚙️ Settings"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="12dp" />
 
                 </LinearLayout>
 
@@ -335,31 +407,34 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
+                <!-- Playlist Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Playlist"
-                    android:textSize="18sp"
+                    android:text="📋 Your Playlist"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:minHeight="200dp" />
 
             </LinearLayout>
 

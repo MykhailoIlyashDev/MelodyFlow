@@ -1,72 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardTrack"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/surface"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_margin="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:strokeColor="@color/card_stroke"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Track Title"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginBottom="4dp" />
+        <!-- Track Icon -->
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_media_play"
+            android:tint="@color/primary"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/circular_background"
+            android:padding="12dp" />
 
-        <TextView
-            android:id="@+id/tvArtist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Artist Name"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginBottom="4dp" />
-
+        <!-- Track Info -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginEnd="16dp">
 
             <TextView
-                android:id="@+id/tvDuration"
-                android:layout_width="0dp"
+                android:id="@+id/tvTrackTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="0:00"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:text="Track Title"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginBottom="4dp" />
 
             <TextView
-                android:id="@+id/tvSize"
-                android:layout_width="0dp"
+                android:id="@+id/tvTrackArtist"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="0 KB"
+                android:text="Artist Name"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvTrackDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3:45"
                 android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:textColor="@color/text_tertiary"
+                android:fontFamily="monospace" />
 
         </LinearLayout>
+
+        <!-- Play Button -->
+        <ImageButton
+            android:id="@+id/btnPlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_media_play"
+            android:background="@drawable/circular_background"
+            android:tint="@color/primary"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
 
     </LinearLayout>
 

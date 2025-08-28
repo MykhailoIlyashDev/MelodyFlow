@@ -2,6 +2,7 @@ package com.example.simpleaudioplayer
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var audioManager: AudioManager
     private lateinit var playlistAdapter: PlaylistAdapter
+    private lateinit var sharedPreferences: SharedPreferences
     private val audioTracks = mutableListOf<AudioTrack>()
     private var currentTrackIndex = -1
     private var isPlaying = false
@@ -79,11 +81,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("SimpleAudioPlayer", Context.MODE_PRIVATE)
+        
         initializeViews()
         setupMediaPlayer()
         setupRecyclerView()
         setupClickListeners()
         setupSliders()
+        
+        // Load saved state
+        loadSavedState()
         
         // Request permissions
         if (!checkPermissions()) {
@@ -112,30 +120,43 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun setupMediaPlayer() {
-        mediaPlayer = MediaPlayer()
-        mediaPlayer.setOnCompletionListener {
-            if (isRepeatTrack) {
-                playCurrentTrack()
-            } else {
-                playNextTrack()
+        try {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setOnCompletionListener {
+                if (isRepeatTrack) {
+                    playCurrentTrack()
+                } else {
+                    playNextTrack()
+                }
             }
+            
+            mediaPlayer.setOnPreparedListener {
+                try {
+                    currentDuration = mediaPlayer.duration.toLong()
+                    updateProgress()
+                    startProgressUpdates()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error in onPrepared: ${e.message}")
+                    showToast("Помилка підготовки треку")
+                }
+            }
+            
+            mediaPlayer.setOnErrorListener { _, what, extra ->
+                Log.e(TAG, "MediaPlayer error: what=$what, extra=$extra")
+                showToast("Помилка відтворення: $what")
+                isPlaying = false
+                updatePlayPauseButton()
+                false
+            }
+            
+            // Set initial volume
+            mediaPlayer.setVolume(currentVolume, currentVolume)
+            sliderVolume.value = currentVolume * 100
+            updateVolumeDisplay()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting up MediaPlayer: ${e.message}")
+            showToast("Помилка ініціалізації плеєра")
         }
-        
-        mediaPlayer.setOnPreparedListener {
-            currentDuration = mediaPlayer.duration.toLong()
-            updateProgress()
-            startProgressUpdates()
-        }
-        
-        mediaPlayer.setOnErrorListener { _, what, extra ->
-            showToast("Playback error: $what")
-            false
-        }
-        
-        // Set initial volume
-        mediaPlayer.setVolume(currentVolume, currentVolume)
-        sliderVolume.value = currentVolume * 100
-        updateVolumeDisplay()
     }
     
     private fun setupRecyclerView() {
@@ -373,18 +394,46 @@ class MainActivity : AppCompatActivity() {
             currentTrackIndex = position
             val track = audioTracks[position]
             
+            // Reset and prepare MediaPlayer
             mediaPlayer.reset()
-            mediaPlayer.setDataSource(this, Uri.parse(track.path))
-            mediaPlayer.prepareAsync()
             
-            isPlaying = true
-            updatePlayPauseButton()
-            updateNowPlaying()
+            // Validate URI before setting data source
+            val uri = try {
+                Uri.parse(track.path)
+            } catch (e: Exception) {
+                Log.e(TAG, "Invalid URI: ${track.path}")
+                showToast("Невірний формат файлу")
+                return
+            }
             
-            showToast("Грає: ${track.title}")
+            // Check if file exists and is accessible
+            try {
+                mediaPlayer.setDataSource(this, uri)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error setting data source: ${e.message}")
+                showToast("Файл недоступний або пошкоджений")
+                return
+            }
+            
+            // Prepare async with error handling
+            try {
+                mediaPlayer.prepareAsync()
+                isPlaying = true
+                updatePlayPauseButton()
+                updateNowPlaying()
+                showToast("Грає: ${track.title}")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error preparing MediaPlayer: ${e.message}")
+                showToast("Помилка підготовки треку")
+                isPlaying = false
+                updatePlayPauseButton()
+            }
             
         } catch (e: Exception) {
+            Log.e(TAG, "Error in playTrack: ${e.message}")
             showToast("Помилка відтворення: ${e.message}")
+            isPlaying = false
+            updatePlayPauseButton()
         }
     }
     
@@ -515,9 +564,90 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
     
+    override fun onPause() {
+        super.onPause()
+        saveCurrentState()
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
+        saveCurrentState()
         mediaPlayer.release()
+    }
+    
+    private fun saveCurrentState() {
+        try {
+            val editor = sharedPreferences.edit()
+            editor.putInt("currentTrackIndex", currentTrackIndex)
+            editor.putBoolean("isPlaying", isPlaying)
+            editor.putBoolean("isRepeatTrack", isRepeatTrack)
+            editor.putBoolean("isRepeatPlaylist", isRepeatPlaylist)
+            editor.putBoolean("isShuffle", isShuffle)
+            editor.putFloat("currentVolume", currentVolume)
+            editor.putLong("currentPosition", currentPosition)
+            
+            // Save audio tracks
+            val tracksJson = audioTracks.joinToString("|") { track ->
+                "${track.id}|${track.title}|${track.artist}|${track.album}|${track.duration}|${track.path}|${track.size}|${track.lastModified}"
+            }
+            editor.putString("audioTracks", tracksJson)
+            
+            editor.apply()
+            Log.d(TAG, "State saved successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving state: ${e.message}")
+        }
+    }
+    
+    private fun loadSavedState() {
+        try {
+            currentTrackIndex = sharedPreferences.getInt("currentTrackIndex", -1)
+            isPlaying = sharedPreferences.getBoolean("isPlaying", false)
+            isRepeatTrack = sharedPreferences.getBoolean("isRepeatTrack", false)
+            isRepeatPlaylist = sharedPreferences.getBoolean("isRepeatPlaylist", false)
+            isShuffle = sharedPreferences.getBoolean("isShuffle", false)
+            currentVolume = sharedPreferences.getFloat("currentVolume", 1.0f)
+            currentPosition = sharedPreferences.getLong("currentPosition", 0L)
+            
+            // Load audio tracks
+            val tracksJson = sharedPreferences.getString("audioTracks", "")
+            if (!tracksJson.isNullOrEmpty()) {
+                val tracks = tracksJson.split("|").chunked(8).mapNotNull { parts ->
+                    if (parts.size == 8) {
+                        try {
+                            AudioTrack(
+                                id = parts[0].toLong(),
+                                title = parts[1],
+                                artist = parts[2],
+                                album = parts[3],
+                                duration = parts[4].toLong(),
+                                path = parts[5],
+                                size = parts[6].toLong(),
+                                lastModified = parts[7].toLong()
+                            )
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error parsing track: ${e.message}")
+                            null
+                        }
+                    } else null
+                }
+                
+                audioTracks.clear()
+                audioTracks.addAll(tracks)
+                playlistAdapter.notifyDataSetChanged()
+                Log.d(TAG, "Loaded ${tracks.size} tracks from saved state")
+            }
+            
+            // Update UI
+            updatePlayPauseButton()
+            updateRepeatButtons()
+            updateShuffleButton()
+            updateVolumeDisplay()
+            updateNowPlaying()
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading state: ${e.message}")
+        }
     }
     
     companion object {

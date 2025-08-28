@@ -15,11 +15,10 @@ class PlaylistAdapter(
 ) : RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardView: MaterialCardView = view.findViewById(R.id.cardTrack)
-        val tvTitle: TextView = view.findViewById(R.id.tvTitle)
-        val tvArtist: TextView = view.findViewById(R.id.tvArtist)
-        val tvDuration: TextView = view.findViewById(R.id.tvDuration)
-        val tvSize: TextView = view.findViewById(R.id.tvSize)
+        val cardView: View = view
+        val tvTitle: TextView = view.findViewById(R.id.tvTrackTitle)
+        val tvArtist: TextView = view.findViewById(R.id.tvTrackArtist)
+        val tvDuration: TextView = view.findViewById(R.id.tvTrackDuration)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,7 +33,6 @@ class PlaylistAdapter(
         holder.tvTitle.text = track.title
         holder.tvArtist.text = track.artist
         holder.tvDuration.text = formatTime(track.duration)
-        holder.tvSize.text = formatFileSize(track.size)
         
         holder.cardView.setOnClickListener {
             onTrackClick(position)
