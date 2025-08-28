@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -242,14 +243,19 @@ class MainActivity : AppCompatActivity() {
     
     private fun addAudioFiles(uris: List<Uri>) {
         val newTracks = mutableListOf<AudioTrack>()
+        var errorCount = 0
         
         for (uri in uris) {
             try {
                 val track = createAudioTrackFromUri(uri)
                 if (track != null && !audioTracks.contains(track)) {
                     newTracks.add(track)
+                } else if (track == null) {
+                    errorCount++
+                    showToast("Не вдалося створити трек для: ${uri.lastPathSegment ?: "невідомий файл"}")
                 }
             } catch (e: Exception) {
+                errorCount++
                 showToast("Помилка додавання файлу: ${e.message}")
             }
         }
@@ -258,35 +264,103 @@ class MainActivity : AppCompatActivity() {
             audioTracks.addAll(newTracks)
             playlistAdapter.notifyDataSetChanged()
             updateTrackCount()
-            showToast("Додано ${newTracks.size} аудіо файлів")
+            
+            val message = if (errorCount > 0) {
+                "Додано ${newTracks.size} файлів, помилок: $errorCount"
+            } else {
+                "Додано ${newTracks.size} аудіо файлів"
+            }
+            showToast(message)
             
             if (currentTrackIndex == -1) {
                 currentTrackIndex = 0
                 updateNowPlaying()
             }
+        } else if (errorCount > 0) {
+            showToast("Не вдалося додати жодного файлу. Перевірте дозволи та формат файлів.")
         }
     }
     
     private fun createAudioTrackFromUri(uri: Uri): AudioTrack? {
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        return cursor?.use {
-            val nameIndex = it.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
-            val durationIndex = it.getColumnIndex(MediaStore.MediaColumns.DURATION)
-            val sizeIndex = it.getColumnIndex(MediaStore.MediaColumns.SIZE)
-            
-            it.moveToFirst()
-            val name = it.getString(nameIndex) ?: "Unknown Track"
-            val duration = it.getLong(durationIndex)
-            val size = it.getLong(sizeIndex)
-            
+        Log.d(TAG, "Creating audio track from URI: $uri")
+        return try {
+            // Спробуємо отримати метадані через MediaStore
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.use { cursorInner ->
+                if (cursorInner.moveToFirst()) {
+                    val nameIndex = cursorInner.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
+                    val durationIndex = cursorInner.getColumnIndex(MediaStore.MediaColumns.DURATION)
+                    val sizeIndex = cursorInner.getColumnIndex(MediaStore.MediaColumns.SIZE)
+                    
+                    val name = if (nameIndex >= 0) cursorInner.getString(nameIndex) else null
+                    val duration = if (durationIndex >= 0) cursorInner.getLong(durationIndex) else 0L
+                    val size = if (sizeIndex >= 0) cursorInner.getLong(sizeIndex) else 0L
+                    
+                    if (name != null) {
+                        AudioTrack(
+                            id = System.currentTimeMillis() + Random().nextLong(),
+                            title = name,
+                            artist = "Unknown Artist",
+                            album = "Unknown Album",
+                            duration = duration,
+                            path = uri.toString(),
+                            size = size,
+                            lastModified = System.currentTimeMillis()
+                        )
+                    } else {
+                        // Якщо не можемо отримати назву, використовуємо URI
+                        val fileName = uri.lastPathSegment ?: "Unknown Track"
+                        AudioTrack(
+                            id = System.currentTimeMillis() + Random().nextLong(),
+                            title = fileName,
+                            artist = "Unknown Artist",
+                            album = "Unknown Album",
+                            duration = 0L,
+                            path = uri.toString(),
+                            size = 0L,
+                            lastModified = System.currentTimeMillis()
+                        )
+                    }
+                } else {
+                    // Якщо cursor порожній, створюємо базовий трек
+                    val fileName = uri.lastPathSegment ?: "Unknown Track"
+                    AudioTrack(
+                        id = System.currentTimeMillis() + Random().nextLong(),
+                        title = fileName,
+                        artist = "Unknown Artist",
+                        album = "Unknown Album",
+                        duration = 0L,
+                        path = uri.toString(),
+                        size = 0L,
+                        lastModified = System.currentTimeMillis()
+                    )
+                }
+            } ?: run {
+                // Якщо cursor == null, створюємо базовий трек
+                val fileName = uri.lastPathSegment ?: "Unknown Track"
+                AudioTrack(
+                    id = System.currentTimeMillis() + Random().nextLong(),
+                    title = fileName,
+                    artist = "Unknown Artist",
+                    album = "Unknown Album",
+                    duration = 0L,
+                    path = uri.toString(),
+                    size = 0L,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
+        } catch (e: Exception) {
+            // Якщо виникла помилка, створюємо базовий трек
+            Log.e(TAG, "Error creating audio track from URI: $uri", e)
+            val fileName = uri.lastPathSegment ?: "Unknown Track"
             AudioTrack(
                 id = System.currentTimeMillis() + Random().nextLong(),
-                title = name,
+                title = fileName,
                 artist = "Unknown Artist",
                 album = "Unknown Album",
-                duration = duration,
+                duration = 0L,
                 path = uri.toString(),
-                size = size,
+                size = 0L,
                 lastModified = System.currentTimeMillis()
             )
         }
