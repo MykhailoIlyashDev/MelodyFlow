@@ -1,51 +1,75 @@
 package com.example.simpleaudioplayer
 
 import android.Manifest
-import android.content.Intent
+import android.content.Context
 import android.content.pm.PackageManager
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Button
-import android.widget.TextView
-import android.view.View
-import android.app.Activity
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var btnAddAudio: Button
-    private lateinit var btnPlayPause: Button
-    private lateinit var btnNext: Button
-    private lateinit var btnPrevious: Button
-    private lateinit var btnRepeatTrack: Button
-    private lateinit var btnRepeatPlaylist: Button
-    private lateinit var sliderProgress: Slider
-    private lateinit var sliderVolume: Slider
-    private lateinit var tvCurrentTrack: TextView
-    private lateinit var tvTrackCount: TextView
-    
+    // Core Components
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var audioManager: AudioManager
     private lateinit var playlistAdapter: PlaylistAdapter
     private val audioTracks = mutableListOf<AudioTrack>()
-    private var currentTrackIndex = 0
+    private var currentTrackIndex = -1
     private var isPlaying = false
     private var isRepeatTrack = false
     private var isRepeatPlaylist = false
+    private var isShuffle = false
+    private var currentVolume = 1.0f
+    private var currentPosition = 0L
+    private var currentDuration = 0L
     
-    private val pickAudioLauncher = registerForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
-    ) { uris ->
-        if (uris.isNotEmpty()) {
+    // UI Components
+    private lateinit var btnPlayPause: MaterialButton
+    private lateinit var btnPrevious: MaterialButton
+    private lateinit var btnNext: MaterialButton
+    private lateinit var btnRepeatTrack: MaterialButton
+    private lateinit var btnRepeatPlaylist: MaterialButton
+    private lateinit var btnShuffle: MaterialButton
+    private lateinit var btnAddAudio: MaterialButton
+    private lateinit var btnSettings: MaterialButton
+    private lateinit var sliderProgress: Slider
+    private lateinit var sliderVolume: Slider
+    private lateinit var tvCurrentTime: TextView
+    private lateinit var tvTotalTime: TextView
+    private lateinit var tvVolume: TextView
+    private lateinit var tvNowPlaying: TextView
+    private lateinit var recyclerView: RecyclerView
+    
+    // Permissions
+    private val PERMISSION_REQUEST_CODE = 123
+    private val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.READ_MEDIA_AUDIO,
+            Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+    }
+    
+    private val pickAudioLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        if (uris != null) {
             addAudioFiles(uris)
         }
     }
@@ -54,49 +78,93 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
-        initViews()
+        initializeViews()
+        setupMediaPlayer()
+        setupRecyclerView()
         setupClickListeners()
-        checkPermission()
+        setupSliders()
+        
+        // Request permissions
+        if (!checkPermissions()) {
+            requestPermissions()
+        }
     }
     
-    private fun initViews() {
-        recyclerView = findViewById(R.id.recyclerViewPlaylist)
-        btnAddAudio = findViewById(R.id.btnAddAudio)
+    private fun initializeViews() {
         btnPlayPause = findViewById(R.id.btnPlayPause)
-        btnNext = findViewById(R.id.btnNext)
         btnPrevious = findViewById(R.id.btnPrevious)
+        btnNext = findViewById(R.id.btnNext)
         btnRepeatTrack = findViewById(R.id.btnRepeatTrack)
         btnRepeatPlaylist = findViewById(R.id.btnRepeatPlaylist)
+        btnShuffle = findViewById(R.id.btnShuffle)
+        btnAddAudio = findViewById(R.id.btnAddAudio)
+        btnSettings = findViewById(R.id.btnSettings)
         sliderProgress = findViewById(R.id.sliderProgress)
         sliderVolume = findViewById(R.id.sliderVolume)
-        tvCurrentTrack = findViewById(R.id.tvCurrentTrack)
-        tvTrackCount = findViewById(R.id.tvPlaylistCount)
+        tvCurrentTime = findViewById(R.id.tvCurrentTime)
+        tvTotalTime = findViewById(R.id.tvTotalTime)
+        tvVolume = findViewById(R.id.tvVolume)
+        tvNowPlaying = findViewById(R.id.tvNowPlaying)
+        recyclerView = findViewById(R.id.recyclerView)
         
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
+    
+    private fun setupMediaPlayer() {
+        mediaPlayer = MediaPlayer()
+        mediaPlayer.setOnCompletionListener {
+            if (isRepeatTrack) {
+                playCurrentTrack()
+            } else {
+                playNextTrack()
+            }
+        }
+        
+        mediaPlayer.setOnPreparedListener {
+            currentDuration = mediaPlayer.duration.toLong()
+            updateProgress()
+            startProgressUpdates()
+        }
+        
+        mediaPlayer.setOnErrorListener { _, what, extra ->
+            showToast("Playback error: $what")
+            false
+        }
+        
+        // Set initial volume
+        mediaPlayer.setVolume(currentVolume, currentVolume)
+        sliderVolume.value = currentVolume * 100
+        updateVolumeDisplay()
+    }
+    
+    private fun setupRecyclerView() {
         playlistAdapter = PlaylistAdapter(audioTracks) { position ->
             playTrack(position)
         }
-        
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = playlistAdapter
     }
     
     private fun setupClickListeners() {
-        btnAddAudio.setOnClickListener {
-            if (checkPermission()) {
-                pickAudioFiles()
+        btnPlayPause.setOnClickListener {
+            if (audioTracks.isEmpty()) {
+                showToast("Додайте аудіо файли спочатку")
+                return@setOnClickListener
+            }
+            
+            if (currentTrackIndex == -1) {
+                playTrack(0)
+            } else {
+                togglePlayPause()
             }
         }
         
-        btnPlayPause.setOnClickListener {
-            togglePlayPause()
+        btnPrevious.setOnClickListener {
+            playPreviousTrack()
         }
         
         btnNext.setOnClickListener {
-            nextTrack()
-        }
-        
-        btnPrevious.setOnClickListener {
-            previousTrack()
+            playNextTrack()
         }
         
         btnRepeatTrack.setOnClickListener {
@@ -107,64 +175,65 @@ class MainActivity : AppCompatActivity() {
             toggleRepeatPlaylist()
         }
         
+        btnShuffle.setOnClickListener {
+            toggleShuffle()
+        }
+        
+        btnAddAudio.setOnClickListener {
+            if (checkPermissions()) {
+                pickAudioFiles()
+            }
+        }
+        
+        btnSettings.setOnClickListener {
+            showSettingsDialog()
+        }
+    }
+    
+    private fun setupSliders() {
         sliderProgress.addOnChangeListener { _, value, fromUser ->
-            if (fromUser) {
-                showMessage("Seeking to: ${formatTime(value.toLong())}")
+            if (fromUser && mediaPlayer.isPlaying) {
+                val newPosition = (value * currentDuration).toLong()
+                mediaPlayer.seekTo(newPosition.toInt())
+                currentPosition = newPosition
+                updateProgress()
             }
         }
         
         sliderVolume.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                showMessage("Volume: ${value.toInt()}%")
+                currentVolume = value / 100f
+                mediaPlayer.setVolume(currentVolume, currentVolume)
+                updateVolumeDisplay()
             }
         }
+        
+        // Set initial values
+        sliderVolume.value = currentVolume * 100
     }
     
-    private fun checkPermission(): Boolean {
-        val permissions = mutableListOf<String>()
-        
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13+ - використовуємо READ_MEDIA_AUDIO
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                permissions.add(Manifest.permission.READ_MEDIA_AUDIO)
+    private fun checkPermissions(): Boolean {
+        for (permission in requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
             }
-            
-            // Android 13+ - запитуємо дозвіл на повідомлення
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                permissions.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        } else {
-            // Android 12 та нижче - використовуємо READ_EXTERNAL_STORAGE
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
-        
-        if (permissions.isNotEmpty()) {
-            requestPermissions(permissions.toTypedArray())
-            return false
         }
         return true
     }
     
-    private fun requestPermissions(permissions: Array<String>) {
-        ActivityCompat.requestPermissions(
-            this,
-            permissions,
-            PERMISSION_REQUEST_CODE
-        )
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(this, requiredPermissions, PERMISSION_REQUEST_CODE)
+    }
+    
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                showToast("Всі дозволи надано")
+            } else {
+                showToast("Потрібні дозволи для доступу до аудіо файлів")
+            }
+        }
     }
     
     private fun pickAudioFiles() {
@@ -172,140 +241,212 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun addAudioFiles(uris: List<Uri>) {
+        val newTracks = mutableListOf<AudioTrack>()
+        
         for (uri in uris) {
-            val trackName = getFileName(uri)
-            val audioTrack = AudioTrack(uri, trackName, 0L)
-            if (!audioTracks.contains(audioTrack)) {
-                audioTracks.add(audioTrack)
+            try {
+                val track = createAudioTrackFromUri(uri)
+                if (track != null && !audioTracks.contains(track)) {
+                    newTracks.add(track)
+                }
+            } catch (e: Exception) {
+                showToast("Помилка додавання файлу: ${e.message}")
             }
         }
-        updatePlaylist()
-        updateTrackCount()
-        showMessage("Added ${uris.size} audio files")
+        
+        if (newTracks.isNotEmpty()) {
+            audioTracks.addAll(newTracks)
+            playlistAdapter.notifyDataSetChanged()
+            updateTrackCount()
+            showToast("Додано ${newTracks.size} аудіо файлів")
+            
+            if (currentTrackIndex == -1) {
+                currentTrackIndex = 0
+                updateNowPlaying()
+            }
+        }
     }
     
-    private fun getFileName(uri: Uri): String {
+    private fun createAudioTrackFromUri(uri: Uri): AudioTrack? {
         val cursor = contentResolver.query(uri, null, null, null, null)
         return cursor?.use {
             val nameIndex = it.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
+            val durationIndex = it.getColumnIndex(MediaStore.MediaColumns.DURATION)
+            val sizeIndex = it.getColumnIndex(MediaStore.MediaColumns.SIZE)
+            
             it.moveToFirst()
-            it.getString(nameIndex) ?: "Unknown Track"
-        } ?: "Unknown Track"
-    }
-    
-    private fun updatePlaylist() {
-        playlistAdapter.notifyDataSetChanged()
-    }
-    
-    private fun updateTrackCount() {
-        tvTrackCount.text = "Tracks: ${audioTracks.size}"
+            val name = it.getString(nameIndex) ?: "Unknown Track"
+            val duration = it.getLong(durationIndex)
+            val size = it.getLong(sizeIndex)
+            
+            AudioTrack(
+                id = System.currentTimeMillis() + Random().nextLong(),
+                title = name,
+                artist = "Unknown Artist",
+                album = "Unknown Album",
+                duration = duration,
+                path = uri.toString(),
+                size = size,
+                lastModified = System.currentTimeMillis()
+            )
+        }
     }
     
     private fun playTrack(position: Int) {
-        if (position in audioTracks.indices) {
+        if (position < 0 || position >= audioTracks.size) return
+        
+        try {
             currentTrackIndex = position
             val track = audioTracks[position]
-            tvCurrentTrack.text = "Now Playing: ${track.name}"
+            
+            mediaPlayer.reset()
+            mediaPlayer.setDataSource(this, Uri.parse(track.path))
+            mediaPlayer.prepareAsync()
+            
             isPlaying = true
             updatePlayPauseButton()
-            showMessage("Playing: ${track.name}")
+            updateNowPlaying()
+            
+            showToast("Грає: ${track.title}")
+            
+        } catch (e: Exception) {
+            showToast("Помилка відтворення: ${e.message}")
+        }
+    }
+    
+    private fun playCurrentTrack() {
+        if (currentTrackIndex >= 0 && currentTrackIndex < audioTracks.size) {
+            playTrack(currentTrackIndex)
         }
     }
     
     private fun togglePlayPause() {
-        if (audioTracks.isNotEmpty()) {
-            isPlaying = !isPlaying
-            updatePlayPauseButton()
-            val action = if (isPlaying) "Playing" else "Paused"
-            showMessage(action)
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            isPlaying = false
+            currentPosition = mediaPlayer.currentPosition.toLong()
         } else {
-            showMessage("No tracks in playlist")
+            mediaPlayer.start()
+            isPlaying = true
+            startProgressUpdates()
         }
+        updatePlayPauseButton()
+    }
+    
+    private fun playPreviousTrack() {
+        if (audioTracks.isEmpty()) return
+        
+        val newIndex = if (currentTrackIndex > 0) currentTrackIndex - 1 else audioTracks.size - 1
+        playTrack(newIndex)
+    }
+    
+    private fun playNextTrack() {
+        if (audioTracks.isEmpty()) return
+        
+        val newIndex = if (currentTrackIndex < audioTracks.size - 1) currentTrackIndex + 1 else 0
+        playTrack(newIndex)
+    }
+    
+    private fun toggleRepeatTrack() {
+        isRepeatTrack = !isRepeatTrack
+        isRepeatPlaylist = false
+        updateRepeatButtons()
+        showToast(if (isRepeatTrack) "Повтор треку увімкнено" else "Повтор треку вимкнено")
+    }
+    
+    private fun toggleRepeatPlaylist() {
+        isRepeatPlaylist = !isRepeatPlaylist
+        isRepeatTrack = false
+        updateRepeatButtons()
+        showToast(if (isRepeatPlaylist) "Повтор плейлиста увімкнено" else "Повтор плейлиста вимкнено")
+    }
+    
+    private fun toggleShuffle() {
+        isShuffle = !isShuffle
+        updateShuffleButton()
+        showToast(if (isShuffle) "Перемішування увімкнено" else "Перемішування вимкнено")
     }
     
     private fun updatePlayPauseButton() {
         btnPlayPause.text = if (isPlaying) "⏸️" else "▶️"
     }
     
-    private fun nextTrack() {
-        if (audioTracks.isNotEmpty()) {
-            currentTrackIndex = (currentTrackIndex + 1) % audioTracks.size
-            playTrack(currentTrackIndex)
+    private fun updateRepeatButtons() {
+        btnRepeatTrack.text = if (isRepeatTrack) "🔂" else "🔂"
+        btnRepeatPlaylist.text = if (isRepeatPlaylist) "🔁" else "🔁"
+    }
+    
+    private fun updateShuffleButton() {
+        btnShuffle.text = if (isShuffle) "🔀" else "🔀"
+    }
+    
+    private fun updateNowPlaying() {
+        if (currentTrackIndex >= 0 && currentTrackIndex < audioTracks.size) {
+            val track = audioTracks[currentTrackIndex]
+            tvNowPlaying.text = "${track.title} - ${track.artist}"
+        } else {
+            tvNowPlaying.text = "Нічого не грає"
         }
     }
     
-    private fun previousTrack() {
-        if (audioTracks.isNotEmpty()) {
-            currentTrackIndex = if (currentTrackIndex > 0) currentTrackIndex - 1 else audioTracks.size - 1
-            playTrack(currentTrackIndex)
+    private fun updateTrackCount() {
+        // Track count is shown in the playlist
+    }
+    
+    private fun updateVolumeDisplay() {
+        val volumePercent = (currentVolume * 100).toInt()
+        tvVolume.text = "$volumePercent%"
+    }
+    
+    private fun updateProgress() {
+        if (currentDuration > 0) {
+            val progress = currentPosition.toFloat() / currentDuration
+            sliderProgress.value = progress
+            tvCurrentTime.text = formatTime(currentPosition.toInt())
+            tvTotalTime.text = formatTime(currentDuration.toInt())
         }
     }
     
-    private fun toggleRepeatTrack() {
-        isRepeatTrack = !isRepeatTrack
-        btnRepeatTrack.text = if (isRepeatTrack) "Repeat Track: ON" else "Repeat Track: OFF"
-        showMessage("Repeat Track: ${if (isRepeatTrack) "ON" else "OFF"}")
+    private fun startProgressUpdates() {
+        val handler = android.os.Handler(android.os.Looper.getMainLooper())
+        val runnable = object : Runnable {
+            override fun run() {
+                if (mediaPlayer.isPlaying) {
+                    currentPosition = mediaPlayer.currentPosition.toLong()
+                    updateProgress()
+                }
+                handler.postDelayed(this, 1000)
+            }
+        }
+        handler.post(runnable)
     }
     
-    private fun toggleRepeatPlaylist() {
-        isRepeatPlaylist = !isRepeatPlaylist
-        btnRepeatPlaylist.text = if (isRepeatPlaylist) "Repeat Playlist: ON" else "Repeat Playlist: OFF"
-        showMessage("Repeat Playlist: ${if (isRepeatPlaylist) "ON" else "OFF"}")
-    }
-    
-    private fun formatTime(milliseconds: Long): String {
-        val seconds = (milliseconds / 1000).toInt()
+    private fun formatTime(milliseconds: Int): String {
+        val seconds = milliseconds / 1000
         val minutes = seconds / 60
         val remainingSeconds = seconds % 60
         return String.format("%d:%02d", minutes, remainingSeconds)
     }
     
-    private fun showMessage(message: String) {
+    private fun showSettingsDialog() {
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Налаштування")
+            .setMessage("Версія додатку: 1.0.0\n\nЦе простий аудіо плеєр з базовими функціями.")
+            .setPositiveButton("OK", null)
+            .create()
+        dialog.show()
+    }
+    
+    private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
     
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            val deniedPermissions = mutableListOf<String>()
-            
-            for (i in permissions.indices) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    deniedPermissions.add(permissions[i])
-                }
-            }
-            
-            if (deniedPermissions.isEmpty()) {
-                showMessage("All permissions granted")
-            } else {
-                showPermissionDeniedDialog(deniedPermissions)
-            }
-        }
-    }
-    
-    private fun showPermissionDeniedDialog(deniedPermissions: List<String>) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Permissions Required")
-            .setMessage("This app needs audio access permissions to play music files. Please grant the required permissions in Settings.")
-            .setPositiveButton("Settings") { _, _ ->
-                openAppSettings()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-    
-    private fun openAppSettings() {
-        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.fromParts("package", packageName, null)
-        }
-        startActivity(intent)
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
     }
     
     companion object {
-        private const val PERMISSION_REQUEST_CODE = 100
+        private const val TAG = "MainActivity"
     }
 }

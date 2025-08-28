@@ -1,20 +1,24 @@
 package com.example.simpleaudioplayer
 
-import android.net.Uri
-
 data class AudioTrack(
-    val uri: Uri,
-    val name: String,
-    val duration: Long
+    val id: Long,
+    val title: String,
+    val artist: String,
+    val album: String,
+    val duration: Long,
+    val path: String,
+    val size: Long,
+    val lastModified: Long
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
+
         other as AudioTrack
-        return uri == other.uri
+        return path == other.path
     }
 
     override fun hashCode(): Int {
-        return uri.hashCode()
+        return path.hashCode()
     }
 }

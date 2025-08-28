@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-45:12
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-51:12
+INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-51:12
+INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-51:12
+INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:2:1-51:12
 MERGED from [com.google.android.material:material:1.11.0] /Users/michaelilyash/.gradle/caches/transforms-3/9cdf622f24f3fb15e301a142d0cf6c8a/transformed/material-1.11.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/michaelilyash/.gradle/caches/transforms-3/f886aa54234d9474d31211f594ef8604/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/michaelilyash/.gradle/caches/transforms-3/cb40f6c23311a04b7dbec0591e7e019d/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
@@ -28,6 +28,7 @@ MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/michaelilyash/.g
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] /Users/michaelilyash/.gradle/caches/transforms-3/59c1aac06278f3fb5ba5a3e675d40dfd/transformed/lifecycle-viewmodel-2.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/michaelilyash/.gradle/caches/transforms-3/c2acfc098cff316f05b416fc5b9a6677/transformed/lifecycle-viewmodel-savedstate-2.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core-ktx:1.12.0] /Users/michaelilyash/.gradle/caches/transforms-3/f1364ef26db48a6e5d32a443e00be90f/transformed/core-ktx-1.12.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.media:media:1.7.0] /Users/michaelilyash/.gradle/caches/transforms-3/957bb189b7da01bf37be72d39ebd8a86/transformed/media-1.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/89ea3914aa9dc5644c03e9ae75d0c6ea/transformed/drawerlayout-1.1.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/michaelilyash/.gradle/caches/transforms-3/4cbd71406715eb785e47663ab7945759/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.transition:transition:1.2.0] /Users/michaelilyash/.gradle/caches/transforms-3/811c5201091f1929aa3d6afb404f2205/transformed/transition-1.2.0/AndroidManifest.xml:17:1-24:12
@@ -43,8 +44,8 @@ MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.1] /Users/michaelilyas
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/michaelilyash/.gradle/caches/transforms-3/52bb2409b4dbc51bb46e24e06de45831/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/5e2dc5b26d00599019f85ce81968a45f/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/2a37f3f32c2783966bb14fed8f7c050c/transformed/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/b66ae2728a53b41722f0d4985a092e50/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/michaelilyash/.gradle/caches/transforms-3/f6df412bd7cd95927cfdc3b842a3aef7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:17:1-55:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/c7c53497e58d46e37e9706ad9aa08261/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/62c3b5f0a6aa838f5fd27533d60eb232/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
@@ -85,8 +86,8 @@ ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src
 	android:name
 		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:17:22-74
 application
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:19:5-43:19
-INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:19:5-43:19
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:19:5-49:19
+INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:19:5-49:19
 MERGED from [com.google.android.material:material:1.11.0] /Users/michaelilyash/.gradle/caches/transforms-3/9cdf622f24f3fb15e301a142d0cf6c8a/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] /Users/michaelilyash/.gradle/caches/transforms-3/9cdf622f24f3fb15e301a142d0cf6c8a/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/michaelilyash/.gradle/caches/transforms-3/f886aa54234d9474d31211f594ef8604/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
@@ -128,23 +129,33 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/michaelilyash/.gradl
 	android:dataExtractionRules
 		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:21:9-65
 activity#com.example.simpleaudioplayer.MainActivity
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:31:9-39:20
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:31:21-39:24
 	android:exported
-		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:33:13-36
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:33:17-40
 	android:theme
-		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:34:13-59
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:34:17-63
 	android:name
-		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:32:13-41
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:32:17-45
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:35:13-38:29
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:35:17-38:33
 action#android.intent.action.MAIN
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:36:17-69
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:36:21-73
 	android:name
-		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:36:25-66
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:36:29-70
 category#android.intent.category.LAUNCHER
-ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:37:17-77
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:37:21-81
 	android:name
-		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:37:27-74
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:37:31-78
+service#com.example.simpleaudioplayer.AudioService
+ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:41:13-45:65
+	android:enabled
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:43:17-39
+	android:exported
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:44:17-41
+	android:foregroundServiceType
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:45:17-62
+	android:name
+		ADDED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml:42:17-45
 uses-sdk
 INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/michaelilyash/Documents/2025projects/SimpleAudioPlayer/app/src/main/AndroidManifest.xml
@@ -197,6 +208,8 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/mic
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/michaelilyash/.gradle/caches/transforms-3/c2acfc098cff316f05b416fc5b9a6677/transformed/lifecycle-viewmodel-savedstate-2.6.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core-ktx:1.12.0] /Users/michaelilyash/.gradle/caches/transforms-3/f1364ef26db48a6e5d32a443e00be90f/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.core:core-ktx:1.12.0] /Users/michaelilyash/.gradle/caches/transforms-3/f1364ef26db48a6e5d32a443e00be90f/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.media:media:1.7.0] /Users/michaelilyash/.gradle/caches/transforms-3/957bb189b7da01bf37be72d39ebd8a86/transformed/media-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.media:media:1.7.0] /Users/michaelilyash/.gradle/caches/transforms-3/957bb189b7da01bf37be72d39ebd8a86/transformed/media-1.7.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/89ea3914aa9dc5644c03e9ae75d0c6ea/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/89ea3914aa9dc5644c03e9ae75d0c6ea/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/michaelilyash/.gradle/caches/transforms-3/4cbd71406715eb785e47663ab7945759/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
@@ -227,10 +240,10 @@ MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/michaelilyash/.g
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/5e2dc5b26d00599019f85ce81968a45f/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/2a37f3f32c2783966bb14fed8f7c050c/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/2a37f3f32c2783966bb14fed8f7c050c/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/b66ae2728a53b41722f0d4985a092e50/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/b66ae2728a53b41722f0d4985a092e50/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/michaelilyash/.gradle/caches/transforms-3/61004dcf2988559164e1f3fbb0bc454a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/michaelilyash/.gradle/caches/transforms-3/f6df412bd7cd95927cfdc3b842a3aef7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:21:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/michaelilyash/.gradle/caches/transforms-3/f6df412bd7cd95927cfdc3b842a3aef7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:21:5-44
 MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/michaelilyash/.gradle/caches/transforms-3/c7c53497e58d46e37e9706ad9aa08261/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41

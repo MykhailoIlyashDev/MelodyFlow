@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.simpleaudioplayer.app-mergeDebugResources-36:/values-de/values-de.xml",
+            "outputFile": "com.example.simpleaudioplayer.app-mergeDebugResources-37:/values-de/values-de.xml",
             "map": [
                 {
                     "source": "/Users/michaelilyash/.gradle/caches/transforms-3/9cdf622f24f3fb15e301a142d0cf6c8a/transformed/material-1.11.0/res/values-de/values-de.xml",

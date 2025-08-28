@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PlaylistAdapter(
     private val tracks: List<AudioTrack>,
@@ -12,8 +15,11 @@ class PlaylistAdapter(
 ) : RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvTrackName: TextView = view.findViewById(R.id.tvTrackName)
-        val tvTrackDuration: TextView = view.findViewById(R.id.tvTrackDuration)
+        val cardView: MaterialCardView = view.findViewById(R.id.cardTrack)
+        val tvTitle: TextView = view.findViewById(R.id.tvTitle)
+        val tvArtist: TextView = view.findViewById(R.id.tvArtist)
+        val tvDuration: TextView = view.findViewById(R.id.tvDuration)
+        val tvSize: TextView = view.findViewById(R.id.tvSize)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,9 +30,13 @@ class PlaylistAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
-        holder.tvTrackName.text = track.name
-        holder.tvTrackDuration.text = formatTime(track.duration)
-        holder.itemView.setOnClickListener {
+        
+        holder.tvTitle.text = track.title
+        holder.tvArtist.text = track.artist
+        holder.tvDuration.text = formatTime(track.duration)
+        holder.tvSize.text = formatFileSize(track.size)
+        
+        holder.cardView.setOnClickListener {
             onTrackClick(position)
         }
     }
@@ -34,9 +44,20 @@ class PlaylistAdapter(
     override fun getItemCount() = tracks.size
 
     private fun formatTime(milliseconds: Long): String {
-        val seconds = (milliseconds / 1000).toInt()
+        if (milliseconds <= 0) return "0:00"
+        
+        val seconds = milliseconds / 1000
         val minutes = seconds / 60
         val remainingSeconds = seconds % 60
         return String.format("%d:%02d", minutes, remainingSeconds)
+    }
+
+    private fun formatFileSize(bytes: Long): String {
+        return when {
+            bytes < 1024 -> "${bytes} B"
+            bytes < 1024 * 1024 -> "${bytes / 1024} KB"
+            bytes < 1024 * 1024 * 1024 -> "${bytes / (1024 * 1024)} MB"
+            else -> "${bytes / (1024 * 1024 * 1024)} GB"
+        }
     }
 }

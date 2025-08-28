@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.simpleaudioplayer.app-mergeDebugResources-36:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.example.simpleaudioplayer.app-mergeDebugResources-37:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
                     "source": "/Users/michaelilyash/.gradle/caches/transforms-3/45533955110f59b81fa8e1aa54381241/transformed/appcompat-1.6.1/res/values-en-rAU/values-en-rAU.xml",

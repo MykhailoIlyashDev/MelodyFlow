@@ -53,6 +53,12 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name="com.example.simpleaudioplayer.AudioService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.example.simpleaudioplayer.androidx-startup"
