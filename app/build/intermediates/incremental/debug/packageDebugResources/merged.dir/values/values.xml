@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#FF03DAC5</color>
+    <color name="accent_dark">#FF018786</color>
+    <color name="background">#FF1C1B1F</color>
+    <color name="button_outline">#FF49454F</color>
+    <color name="button_primary">#FF6750A4</color>
+    <color name="button_secondary">#FF625B71</color>
+    <color name="card_background">#FF2B2930</color>
+    <color name="card_elevated">#FF3B383E</color>
+    <color name="card_stroke">#FF49454F</color>
+    <color name="error">#FFF44336</color>
+    <color name="gradient_center">#FF8B5CF6</color>
+    <color name="gradient_end">#FF03DAC5</color>
+    <color name="gradient_start">#FF6750A4</color>
+    <color name="info">#FF2196F3</color>
+    <color name="overlay">#CC000000</color>
+    <color name="primary">#FF6750A4</color>
+    <color name="primary_dark">#FF4F378B</color>
+    <color name="primary_variant">#FF7C4DFF</color>
+    <color name="secondary">#FF625B71</color>
+    <color name="secondary_dark">#FF4A4458</color>
+    <color name="secondary_variant">#FF8B5CF6</color>
+    <color name="semi_transparent">#80000000</color>
+    <color name="slider_active">#FF6750A4</color>
+    <color name="slider_inactive">#FF49454F</color>
+    <color name="slider_thumb">#FF7C4DFF</color>
+    <color name="success">#FF4CAF50</color>
+    <color name="surface">#FF2B2930</color>
+    <color name="surface_bright">#FF3B383E</color>
+    <color name="surface_variant">#FF49454F</color>
+    <color name="text_disabled">#FF49454F</color>
+    <color name="text_primary">#FFE6E1E5</color>
+    <color name="text_secondary">#FFCAC4D0</color>
+    <color name="text_tertiary">#FF938F99</color>
+    <color name="transparent">#00000000</color>
+    <color name="warning">#FFFF9800</color>
+    <string name="app_name">Simple Audio Player</string>
+    <style name="Theme.SimpleAudioPlayer" parent="Theme.Material3.DayNight">
+        
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+        
+        
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        
+        
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        
+        
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorTertiary">@color/text_tertiary</item>
+        
+        
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+    <style name="Widget.Material3.Button.Custom" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_primary</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Widget.Material3.Slider.Custom" parent="Widget.Material3.Slider">
+        <item name="thumbColor">@color/slider_thumb</item>
+        <item name="trackColorActive">@color/slider_active</item>
+        <item name="trackColorInactive">@color/slider_inactive</item>
+        <item name="haloColor">@color/slider_active</item>
+    </style>
+</resources>

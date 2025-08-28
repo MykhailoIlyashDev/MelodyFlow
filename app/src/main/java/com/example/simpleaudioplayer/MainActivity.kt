@@ -122,7 +122,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupMediaPlayer() {
         try {
             mediaPlayer = MediaPlayer()
+            
+            // Set audio stream type
+            mediaPlayer.setAudioStreamType(android.media.AudioManager.STREAM_MUSIC)
+            
             mediaPlayer.setOnCompletionListener {
+                Log.d(TAG, "Track completed")
                 if (isRepeatTrack) {
                     playCurrentTrack()
                 } else {
@@ -142,6 +147,9 @@ class MainActivity : AppCompatActivity() {
                     updateProgress()
                     startProgressUpdates()
                     
+                    // Start playing immediately
+                    mediaPlayer.start()
+                    
                     showToast("Грає: ${audioTracks[currentTrackIndex].title}")
                     
                 } catch (e: Exception) {
@@ -160,10 +168,21 @@ class MainActivity : AppCompatActivity() {
                 false
             }
             
+            mediaPlayer.setOnSeekCompleteListener {
+                Log.d(TAG, "Seek completed")
+            }
+            
+            mediaPlayer.setOnInfoListener { _, what, extra ->
+                Log.d(TAG, "MediaPlayer info: what=$what, extra=$extra")
+                true
+            }
+            
             // Set initial volume
             mediaPlayer.setVolume(currentVolume, currentVolume)
             sliderVolume.value = currentVolume * 100
             updateVolumeDisplay()
+            
+            Log.d(TAG, "MediaPlayer setup completed successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up MediaPlayer: ${e.message}")
             showToast("Помилка ініціалізації плеєра")
@@ -420,12 +439,31 @@ class MainActivity : AppCompatActivity() {
             // Reset and prepare MediaPlayer
             mediaPlayer.reset()
             
-            // Validate URI before setting data source
+            // Handle different URI formats
             val uri = try {
-                Uri.parse(track.path)
+                if (track.path.startsWith("content://")) {
+                    // Content URI from MediaStore
+                    Uri.parse(track.path)
+                } else if (track.path.startsWith("file://")) {
+                    // File URI
+                    Uri.parse(track.path)
+                } else {
+                    // Try to parse as content URI first, then as file
+                    try {
+                        Uri.parse(track.path)
+                    } catch (e: Exception) {
+                        // If parsing fails, try to create content URI
+                        val file = java.io.File(track.path)
+                        if (file.exists()) {
+                            Uri.fromFile(file)
+                        } else {
+                            throw Exception("File not found: ${track.path}")
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Invalid URI: ${track.path}")
-                showToast("Невірний формат файлу")
+                showToast("Невірний формат файлу: ${e.message}")
                 return
             }
             
@@ -437,7 +475,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "Data source set successfully")
             } catch (e: Exception) {
                 Log.e(TAG, "Error setting data source: ${e.message}")
-                showToast("Файл недоступний або пошкоджений")
+                showToast("Файл недоступний або пошкоджений: ${e.message}")
                 return
             }
             
@@ -472,16 +510,36 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun togglePlayPause() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
+        try {
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.pause()
+                isPlaying = false
+                currentPosition = mediaPlayer.currentPosition.toLong()
+                Log.d(TAG, "Playback paused at position: $currentPosition")
+            } else {
+                if (currentTrackIndex >= 0 && currentTrackIndex < audioTracks.size) {
+                    mediaPlayer.start()
+                    isPlaying = true
+                    startProgressUpdates()
+                    Log.d(TAG, "Playback resumed")
+                } else {
+                    // If no track is selected, start from beginning
+                    if (audioTracks.isNotEmpty()) {
+                        playTrack(0)
+                        return
+                    } else {
+                        showToast("Додайте аудіо файли спочатку")
+                        return
+                    }
+                }
+            }
+            updatePlayPauseButton()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in togglePlayPause: ${e.message}")
+            showToast("Помилка керування відтворенням")
             isPlaying = false
-            currentPosition = mediaPlayer.currentPosition.toLong()
-        } else {
-            mediaPlayer.start()
-            isPlaying = true
-            startProgressUpdates()
+            updatePlayPauseButton()
         }
-        updatePlayPauseButton()
     }
     
     private fun playPreviousTrack() {
@@ -575,9 +633,18 @@ class MainActivity : AppCompatActivity() {
         val handler = android.os.Handler(android.os.Looper.getMainLooper())
         val runnable = object : Runnable {
             override fun run() {
-                if (mediaPlayer.isPlaying) {
-                    currentPosition = mediaPlayer.currentPosition.toLong()
-                    updateProgress()
+                try {
+                    if (mediaPlayer.isPlaying) {
+                        currentPosition = mediaPlayer.currentPosition.toLong()
+                        updateProgress()
+                        
+                        // Log progress every 10 seconds
+                        if (currentPosition % 10000 < 1000) {
+                            Log.d(TAG, "Progress: ${formatTime(currentPosition.toInt())} / ${formatTime(currentDuration.toInt())}")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error in progress update: ${e.message}")
                 }
                 handler.postDelayed(this, 1000)
             }
@@ -656,7 +723,7 @@ class MainActivity : AppCompatActivity() {
                 val tracks = tracksJson.split("|").chunked(8).mapNotNull { parts ->
                     if (parts.size == 8) {
                         try {
-                            AudioTrack(
+                            val track = AudioTrack(
                                 id = parts[0].toLong(),
                                 title = parts[1],
                                 artist = parts[2],
@@ -666,6 +733,14 @@ class MainActivity : AppCompatActivity() {
                                 size = parts[6].toLong(),
                                 lastModified = parts[7].toLong()
                             )
+                            
+                            // Verify file still exists
+                            if (isFileAccessible(track.path)) {
+                                track
+                            } else {
+                                Log.w(TAG, "File no longer accessible: ${track.path}")
+                                null
+                            }
                         } catch (e: Exception) {
                             Log.e(TAG, "Error parsing track: ${e.message}")
                             null
@@ -677,6 +752,12 @@ class MainActivity : AppCompatActivity() {
                 audioTracks.addAll(tracks)
                 playlistAdapter.notifyDataSetChanged()
                 Log.d(TAG, "Loaded ${tracks.size} tracks from saved state")
+                
+                // Reset current track if it's no longer valid
+                if (currentTrackIndex >= audioTracks.size) {
+                    currentTrackIndex = if (audioTracks.isNotEmpty()) 0 else -1
+                    isPlaying = false
+                }
             }
             
             // Update UI
@@ -688,6 +769,28 @@ class MainActivity : AppCompatActivity() {
             
         } catch (e: Exception) {
             Log.e(TAG, "Error loading state: ${e.message}")
+        }
+    }
+    
+    private fun isFileAccessible(filePath: String): Boolean {
+        return try {
+            if (filePath.startsWith("content://")) {
+                // For content URIs, try to query
+                val uri = Uri.parse(filePath)
+                val cursor = contentResolver.query(uri, null, null, null, null)
+                cursor?.use { it.count > 0 } ?: false
+            } else if (filePath.startsWith("file://")) {
+                // For file URIs, check if file exists
+                val file = java.io.File(Uri.parse(filePath).path ?: "")
+                file.exists() && file.canRead()
+            } else {
+                // For regular paths, check if file exists
+                val file = java.io.File(filePath)
+                file.exists() && file.canRead()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking file accessibility: ${e.message}")
+            false
         }
     }
     

@@ -45,3 +45,4 @@ else
     echo "❌ Помилка збірки APK"
     exit 1
 fi
+

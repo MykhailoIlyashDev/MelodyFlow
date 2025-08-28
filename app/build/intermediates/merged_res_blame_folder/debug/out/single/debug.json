@@ -1,94 +1,90 @@
 [
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_create_playlist.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/dialog_create_playlist.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/drawable_circular_background.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/drawable/circular_background.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_custom_sleep_timer.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/dialog_custom_sleep_timer.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xxxhdpi/ic_launcher_round.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_item_favorite_track.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/item_favorite_track.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_activity_main.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/activity_main.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_activity_main.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/activity_main.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xxhdpi/ic_launcher_round.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/xml_backup_rules.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/xml/backup_rules.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_settings.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/dialog_settings.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-hdpi/ic_launcher.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/drawable_circular_background.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/drawable/circular_background.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_equalizer.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/dialog_equalizer.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_item_playlist.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/item_playlist.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_item_track.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/item_track.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_custom_sleep_timer.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/dialog_custom_sleep_timer.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-hdpi/ic_launcher_round.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_item_favorite_track.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/item_favorite_track.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/drawable_rounded_background.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/drawable/rounded_background.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/xml_backup_rules.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/xml/backup_rules.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_equalizer.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/dialog_equalizer.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_item_playlist.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/item_playlist.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_create_playlist.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/dialog_create_playlist.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-mdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/xml_data_extraction_rules.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/xml/data_extraction_rules.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xhdpi/ic_launcher_round.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xhdpi/ic_launcher.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/drawable_rounded_background.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/drawable/rounded_background.xml"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/layout_dialog_settings.xml.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/layout/dialog_settings.xml"
-    },
-    {
-        "merged": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-merged_res-39:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "/Users/michaelilyash/.gradle/daemon/8.4/com.example.simpleaudioplayer.app-main-41:/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "com.example.simpleaudioplayer.app-merged_res-39:/layout_item_track.xml.flat",
+        "source": "com.example.simpleaudioplayer.app-main-41:/layout/item_track.xml"
     }
 ]

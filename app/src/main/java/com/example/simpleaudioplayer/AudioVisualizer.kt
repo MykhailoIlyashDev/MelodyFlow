@@ -339,3 +339,4 @@ class AudioVisualizer @JvmOverloads constructor(
     
     fun getColors(): Triple<Int, Int, Int> = Triple(primaryColor, secondaryColor, backgroundColor)
 }
+
