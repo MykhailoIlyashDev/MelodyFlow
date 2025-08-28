@@ -132,12 +132,23 @@ class MainActivity : AppCompatActivity() {
             
             mediaPlayer.setOnPreparedListener {
                 try {
+                    Log.d(TAG, "MediaPlayer prepared successfully")
                     currentDuration = mediaPlayer.duration.toLong()
+                    Log.d(TAG, "Track duration: $currentDuration ms")
+                    
+                    // Now it's safe to start playing
+                    isPlaying = true
+                    updatePlayPauseButton()
                     updateProgress()
                     startProgressUpdates()
+                    
+                    showToast("Грає: ${audioTracks[currentTrackIndex].title}")
+                    
                 } catch (e: Exception) {
                     Log.e(TAG, "Error in onPrepared: ${e.message}")
                     showToast("Помилка підготовки треку")
+                    isPlaying = false
+                    updatePlayPauseButton()
                 }
             }
             
@@ -297,6 +308,11 @@ class MainActivity : AppCompatActivity() {
                 currentTrackIndex = 0
                 updateNowPlaying()
             }
+            
+            // Auto-save state after adding files
+            saveCurrentState()
+            Log.d(TAG, "Auto-saved state after adding ${newTracks.size} tracks")
+            
         } else if (errorCount > 0) {
             showToast("Не вдалося додати жодного файлу. Перевірте дозволи та формат файлів.")
         }
@@ -394,6 +410,13 @@ class MainActivity : AppCompatActivity() {
             currentTrackIndex = position
             val track = audioTracks[position]
             
+            Log.d(TAG, "Starting to play track: ${track.title} at path: ${track.path}")
+            
+            // Stop current playback first
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
+            
             // Reset and prepare MediaPlayer
             mediaPlayer.reset()
             
@@ -406,9 +429,12 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             
+            Log.d(TAG, "Parsed URI: $uri")
+            
             // Check if file exists and is accessible
             try {
                 mediaPlayer.setDataSource(this, uri)
+                Log.d(TAG, "Data source set successfully")
             } catch (e: Exception) {
                 Log.e(TAG, "Error setting data source: ${e.message}")
                 showToast("Файл недоступний або пошкоджений")
@@ -417,11 +443,13 @@ class MainActivity : AppCompatActivity() {
             
             // Prepare async with error handling
             try {
+                Log.d(TAG, "Starting prepareAsync...")
                 mediaPlayer.prepareAsync()
-                isPlaying = true
-                updatePlayPauseButton()
+                
+                // Don't set isPlaying yet - wait for onPrepared
                 updateNowPlaying()
-                showToast("Грає: ${track.title}")
+                showToast("Підготовка треку: ${track.title}")
+                
             } catch (e: Exception) {
                 Log.e(TAG, "Error preparing MediaPlayer: ${e.message}")
                 showToast("Помилка підготовки треку")
@@ -492,15 +520,21 @@ class MainActivity : AppCompatActivity() {
     
     private fun updatePlayPauseButton() {
         btnPlayPause.text = if (isPlaying) "⏸️" else "▶️"
+        // Save state when playback state changes
+        saveCurrentState()
     }
     
     private fun updateRepeatButtons() {
         btnRepeatTrack.text = if (isRepeatTrack) "🔂" else "🔂"
         btnRepeatPlaylist.text = if (isRepeatPlaylist) "🔁" else "🔁"
+        // Save state when repeat settings change
+        saveCurrentState()
     }
     
     private fun updateShuffleButton() {
         btnShuffle.text = if (isShuffle) "🔀" else "🔀"
+        // Save state when shuffle setting changes
+        saveCurrentState()
     }
     
     private fun updateNowPlaying() {
@@ -519,6 +553,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateVolumeDisplay() {
         val volumePercent = (currentVolume * 100).toInt()
         tvVolume.text = "$volumePercent%"
+        // Save state when volume changes
+        saveCurrentState()
     }
     
     private fun updateProgress() {
@@ -527,6 +563,11 @@ class MainActivity : AppCompatActivity() {
             sliderProgress.value = progress
             tvCurrentTime.text = formatTime(currentPosition.toInt())
             tvTotalTime.text = formatTime(currentDuration.toInt())
+            
+            // Save position every 5 seconds to avoid too frequent saves
+            if (currentPosition % 5000 < 1000) {
+                saveCurrentState()
+            }
         }
     }
     
